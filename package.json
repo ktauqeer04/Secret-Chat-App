@@ -14,9 +14,11 @@
   "description": "",
   "devDependencies": {
     "@types/node": "^22.13.13",
-    "nodemon": "^3.1.9"
+    "nodemon": "^3.1.9",
+    "prisma": "^6.5.0"
   },
   "dependencies": {
+    "@prisma/client": "^6.5.0",
     "@types/express": "^5.0.1",
     "cors": "^2.8.5",
     "dotenv": "^16.4.7",

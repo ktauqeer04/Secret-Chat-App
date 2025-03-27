@@ -4,6 +4,7 @@ import { createServer } from "http";
 import cors from "cors";
 import { PORT } from "./config/server-config";
 import { Pub, Sub } from "./config/redis-config";
+import prisma from "../prisma/migrations/db";
 
 
 
@@ -35,6 +36,11 @@ async function initServer() {
     Sub.on('message', async (channel, message) => {
         if(channel === 'MESSAGE'){
             io.emit("message", message);
+            await prisma.message.create({
+                data: {
+                    text: message
+                }
+            })
             console.log("message from terminal", message);
         }
     })
