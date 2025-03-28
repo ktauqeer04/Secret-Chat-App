@@ -4,13 +4,16 @@ import { createServer } from "http";
 import cors from "cors";
 import { PORT } from "./config/server-config";
 import { Pub, Sub } from "./config/redis-config";
-import prisma from "../prisma/migrations/db";
+import prisma from "./db";
+import { createMessage, messageConsumer } from "./config/kafka-broker-config"
 
 
 
 async function initServer() {
     const app = express();
     const server = createServer(app);
+
+    await messageConsumer();
 
     const io = new Server(server, {
         cors: { origin: '*', methods: ['GET', 'POST'] },
@@ -36,11 +39,7 @@ async function initServer() {
     Sub.on('message', async (channel, message) => {
         if(channel === 'MESSAGE'){
             io.emit("message", message);
-            await prisma.message.create({
-                data: {
-                    text: message
-                }
-            })
+            await createMessage(message);
             console.log("message from terminal", message);
         }
     })
