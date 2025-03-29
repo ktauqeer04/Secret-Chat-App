@@ -4,7 +4,6 @@ import { createServer } from "http";
 import cors from "cors";
 import { PORT } from "./config/server-config";
 import { Pub, Sub } from "./config/redis-config";
-import prisma from "./db";
 import { createMessage, messageConsumer } from "./config/kafka-broker-config"
 
 
